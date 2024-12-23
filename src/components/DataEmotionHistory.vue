@@ -44,16 +44,15 @@ const option = computed(() => ({
     textStyle: {
       fontSize: 15
     },
-    top: '5%'
+    top: '0%'
   },
   grid: {
     left: '5%',
     right: '5%',
     bottom: '8%',
-    top: '3%',
+    top: '12%',
     containLabel: false
   },
-
   xAxis: [
     {
       type: 'category',
@@ -62,6 +61,12 @@ const option = computed(() => ({
     }
   ],
   yAxis: [
+    {
+      type: 'value',
+      min: 0,
+      max: 1,
+      show: false
+    },
     {
       type: 'value',
       show: false

@@ -96,14 +96,13 @@ const optionVIG = computed(() => ({
       radius: '85%',
       min: 0,
       max: 1,
-      splitNumber: 8,
+      splitNumber: 6,
       axisLine: {
         lineStyle: {
           width: 10,
           color: [
-            [0.25, '#7CFFB2'],
-            [0.5, '#58D9F9'],
-            [0.75, '#FDDD60'],
+            [1 / 3, '#58D9F9'],
+            [2 / 3, '#FDDD60'],
             [1, '#FF6E76']
           ]
         }
@@ -113,14 +112,12 @@ const optionVIG = computed(() => ({
         fontSize: 16,
         distance: -45,
         formatter: function (value) {
-          if (value === 0.875) {
+          if (Math.abs(value - 5 / 6) < 0.00001) {
             return '高';
-          } else if (value === 0.625) {
+          } else if (Math.abs(value - 0.5) < 0.00001) {
             return '中';
-          } else if (value === 0.375) {
+          } else if (Math.abs(value - 1 / 6) < 0.00001) {
             return '低';
-          } else if (value === 0.125) {
-            return '无';
           }
           return '';
         }
@@ -128,14 +125,12 @@ const optionVIG = computed(() => ({
       pointer: {
         itemStyle: {
           color: function (value) {
-            if (value > 0.75) {
+            if (value > (2 / 3)) {
               return '#7CFFB2';
-            } else if (value > 0.5) {
+            } else if (value > (1 / 3)) {
               return '#58D9F9';
-            } else if (value > 0.25) {
-              return '#FDDD60';
             } else {
-              return '#FF6E76';
+              return '#FDDD60';
             }
           }
         }
@@ -145,14 +140,12 @@ const optionVIG = computed(() => ({
         offsetCenter: [0, '40%'],
         valueAnimation: true,
         formatter: function (value) {
-          if (value > 0.75) {
+          if (value > (2 / 3)) {
             return '高'
-          } else if (value > 0.5) {
+          } else if (value > (1 / 3)) {
             return '中'
-          } else if (value > 0.25) {
-            return '低'
           } else {
-            return '无'
+            return '低'
           }
         },
         color: 'inherit'

@@ -192,7 +192,7 @@ const optionP = computed(() => ({
   xAxis: {
     show: true,
     type: 'category',
-    data: Array.from({ length: store.P.length }, (_, i) => i),
+    data: Array.from({ length: store.PULSE.length }, (_, i) => i),
     axisTick: {
       show: false
     },
@@ -230,7 +230,7 @@ const optionP = computed(() => ({
   },
   series: [
     {
-      data: store.P,
+      data: store.PULSE,
       type: 'line',
       smooth: true,
       lineStyle: {

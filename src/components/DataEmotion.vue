@@ -17,11 +17,11 @@ let option = computed(() => ({
     // shape: 'circle',
     center: ['50%', '57%'],
     indicator: [
-      { name: '高兴', max: Math.max(...store.emotion) },
-      { name: '平静', max: Math.max(...store.emotion) },
-      { name: '悲伤', max: Math.max(...store.emotion) },
-      { name: '厌恶', max: Math.max(...store.emotion) },
-      { name: '恐惧', max: Math.max(...store.emotion) },
+      { name: '高兴', max: Math.min(Math.max(...store.emotion), 1) },
+      { name: '平静', max: Math.min(Math.max(...store.emotion), 1) },
+      { name: '悲伤', max: Math.min(Math.max(...store.emotion), 1) },
+      { name: '厌恶', max: Math.min(Math.max(...store.emotion), 1) },
+      { name: '恐惧', max: Math.min(Math.max(...store.emotion), 1) },
     ],
     splitLine: {
       lineStyle: {
@@ -61,11 +61,11 @@ const chart = ref(null)
 const handleResize = () => {
   chart.value.resize()
   chart.value.clear()
-};
+}
 
 onMounted(() => {
-  window.addEventListener('resize', handleResize);
-});
+  window.addEventListener('resize', handleResize)
+})
 </script>
 
 <template>

@@ -4,22 +4,21 @@ export const useStore = defineStore('main', {
   state: () => ({
     // Basic
     heartRate: 70,
-    breathingRate: 20,
+    respiration: 20,
     leftEnergy: 20,
 
     // Waves
     ECG: [],
     RESP: [],
     EDA: [],
-    P: [],
+    PULSE: [],
 
     // Stability
-    stability: {
-      mean: 0,
-      std: 1,
-      value: 0.5
-    },
-    outlier: [],
+    mean: 70,
+    variance: 10,
+    value: 70,
+
+    corrdinates: [],
 
     // Cognitive
     cognitiveLoad: 0,
@@ -29,6 +28,6 @@ export const useStore = defineStore('main', {
     emotionHistory: [],
 
     // Emotion
-    emotion: [1, 1, 1, 1, 1]
+    emotion: []
   })
 })

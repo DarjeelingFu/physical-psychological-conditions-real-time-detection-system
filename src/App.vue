@@ -11,51 +11,83 @@ import { onMounted } from 'vue'
 
 const store = useStore()
 
+function dispatch_data(data) {
+  if (data.hasOwnProperty('heartRate')) { store.heartRate = data.heartRate } 
+  if (data.hasOwnProperty('respiration')) { store.respiration = data.respiration  }
+  if (data.hasOwnProperty('leftEnergy')) { store.leftEnergy = data.leftEnergy }
+  if (data.hasOwnProperty('ECG')) { store.ECG = data.ECG }
+  if (data.hasOwnProperty('RESP')) { store.RESP = data.RESP }
+  if (data.hasOwnProperty('EDA')) { store.EDA = data.EDA }
+  if (data.hasOwnProperty('PULSE')) { store.PULSE = data.PULSE }
+  if (data.hasOwnProperty('mean')) { store.mean = data.mean }
+  if (data.hasOwnProperty('variance')) { store.variance = data.variance }
+  if (data.hasOwnProperty('value')) { store.value = data.value }
+  if (data.hasOwnProperty('corrdinates')) { store.corrdinates = data.corrdinates }
+  if (data.hasOwnProperty('cognitiveLoad')) { store.cognitiveLoad = data.cognitiveLoad }
+  if (data.hasOwnProperty('vigilance')) { store.vigilance = data.vigilance }
+  if (data.hasOwnProperty('emotion')) { store.emotion = data.emotion }
+  if (data.hasOwnProperty('emotionHistory')) { 
+    store.emotionHistory = data.emotionHistory.reduce((acc, val, idx) => {
+      const colIdx = idx % 5;
+      if (!acc[colIdx]) acc[colIdx] = [];
+      acc[colIdx].push(val);
+      return acc;
+    }, []);
+  }
+}
+
+function connectWebSocket() {
+  const socket = new WebSocket('ws://127.0.0.1:8080');
+
+  socket.onopen = () => {
+    console.log('WebSocket connection established');
+  }
+
+  socket.onmessage = (event) => {
+    const data = JSON.parse(event.data);
+    dispatch_data(data)
+    console.log(data)
+    console.log(store)
+  }
+
+  socket.onclose = () => {
+    console.log('WebSocket connection closed, retrying in 3 seconds...');
+    setTimeout(connectWebSocket, 3000);
+  }
+
+  socket.onerror = (error) => {
+    console.error('WebSocket error:', error);
+    socket.close();
+  }
+}
+
 onMounted(() => {
   setInterval(() => {
     generateFakeDate(store)
   }, 3000)
 
-  const socket = new WebSocket('ws://127.0.0.1:8080');
-
-  socket.onopen = () => {
-    console.log('WebSocket connection established');
-  };
-
-  socket.onmessage = (event) => {
-    const data = JSON.parse(event.data);
-    // Handle incoming data
-    console.log(data);
-  };
-
-  socket.onclose = () => {
-    console.log('WebSocket connection closed');
-  };
-
-  socket.onerror = (error) => {
-    console.error('WebSocket error:', error);
-  };
+  // connectWebSocket();
 })
 
 function generateFakeDate(store) {
   // Basic
   store.heartRate = Math.floor(Math.random() * 100 + 60)
-  store.breathingRate = Math.floor(Math.random() * 20 + 10)
+  store.respiration = Math.floor(Math.random() * 20 + 10)
   store.leftEnergy = Math.random().toFixed(2)
 
   // Waves
   store.ECG = Array.from({ length: 100 }, () => Math.random())
   store.RESP = Array.from({ length: 100 }, () => Math.random())
   store.EDA = Array.from({ length: 100 }, () => Math.random())
-  store.P = Array.from({ length: 100 }, () => Math.random())
+  store.PULSE = Array.from({ length: 100 }, () => Math.random())
 
   // Stability
-  store.stability.mean = 5
-  store.stability.std = 1
-  store.stability.value = 3 + Math.random() * 4
-  store.outlier = []
-  for (let i = 0; i < 11; i++) {
-    store.outlier.push([Math.random() * 10, Math.random() * 10])
+  store.mean = 70 + Math.random() * 10
+  store.variance = 10 + Math.random() * 5
+  store.value = 70 + Math.random() * 10
+  store.corrdinates = []
+  for (let i = 0; i < 60; i++) {
+    store.corrdinates.push([Math.random() * 10, Math.random() * 10])
   }
 
   // Cognitive

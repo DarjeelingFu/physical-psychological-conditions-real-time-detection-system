@@ -122,7 +122,7 @@ const optionBR = computed(() => ({
       symbolSize: [10, 20],
       symbolOffset: ['0%', '0%'],
       z: 20,
-      data: [store.breathingRate],
+      data: [store.respiration],
       label: {
         normal: {
           show: true,

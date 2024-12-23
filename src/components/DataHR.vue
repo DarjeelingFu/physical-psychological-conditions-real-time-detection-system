@@ -29,23 +29,29 @@ const optionHRS = computed(() => ({
   xAxis: {
     type: 'value',
     splitLine: { show: false }, // Hide grid lines
+    // min: 20,
+    // max: 200
   },
   yAxis: {
     type: 'value',
-    splitLine: { show: false } // Hide grid lines
+    splitLine: { show: false }, // Hide grid lines
+    axisLabel: { show: false },
+    axisTick: { show: false },
+    position: 'left',
+    // max: (Math.floor(10000 * (1 / (store.variance * Math.sqrt(2 * Math.PI)))) + 1) / 10000
   },
   series: [{
     type: 'line',
-    data: Array.from({ length: 100 }, (_, i) => {
-      const x = (i) / 10;
-      const y = Math.exp(-Math.pow(x - store.stability.mean, 2) / 2) / (Math.sqrt(2 * Math.PI) * store.stability.std);
+    data: Array.from({ length: 200 }, (_, i) => {
+      const x = (i);
+      const y = (1 / (store.variance * Math.sqrt(2 * Math.PI))) * Math.exp(-0.5 * Math.pow((x - store.mean) / store.variance, 2));
       return [x, y];
     }),
     showSymbol: false,
   },
   {
     type: 'line',
-    data: [[store.stability.value, 0], [store.stability.value, 0.4]], // Adjust the y values as needed
+    data: [[store.value, 0], [store.value, (1 / (store.variance * Math.sqrt(2 * Math.PI)))]], // Adjust the y values as needed
     lineStyle: {
       color: 'yellow',
       type: 'solid'
@@ -65,12 +71,12 @@ const optionSTG = computed(() => ({
   series: [
     {
       symbolSize: 20,
-      data: store.outlier.slice(0, 10),
+      data: store.corrdinates.slice(0, 59),
       type: 'scatter'
     },
     {
       symbolSize: 20,
-      data: [store.outlier[10]],
+      data: [store.corrdinates[59]],
       type: 'scatter',
       itemStyle: {
         color: 'yellow'
